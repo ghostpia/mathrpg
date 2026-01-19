@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 
 // --- Types & Constants ---
 type QuestionType = 'multiplication' | 'division';
@@ -46,7 +46,7 @@ const LEVELS = [
 // --- Utils ---
 const generateQuestion = (id: string): Question => {
   const type: QuestionType = Math.random() > 0.5 ? 'multiplication' : 'division';
-  let num1, num2, answer;
+  let num1: number, num2: number, answer: number;
   if (type === 'multiplication') {
     num1 = Math.floor(Math.random() * 89) + 11;
     num2 = Math.floor(Math.random() * 8) + 2;
@@ -141,7 +141,7 @@ const HistoryView = ({ onBack }) => {
         {history.length === 0 ? (
           <div className="text-center py-20 text-slate-600 font-bold">아직 훈련 기록이 없습니다.</div>
         ) : (
-          history.map((session, idx) => (
+          history.map((session: QuizSession, idx: number) => (
             <div key={idx} className="bg-slate-900 p-5 rounded-[24px] border border-slate-800 border-l-8 border-l-indigo-500 shadow-xl mb-4">
               <div className="flex justify-between items-center mb-3">
                 <div className="text-sm font-black text-slate-400">{formatDate(session.date)}</div>
@@ -357,5 +357,9 @@ const App = () => {
   return null;
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+// React 18 방식의 렌더링
+const container = document.getElementById('root');
+if (container) {
+  const root = createRoot(container);
+  root.render(<App />);
+}
